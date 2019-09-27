@@ -4,27 +4,27 @@ import numpy as np
 import os, sys
 import matplotlib as mpl
 
-# 3.0 data
-pf1  = 'rmsf_plot/rmsf_3.0.a.feat.avg'
-psf1 = 'rmsf_plot/rmsf_3.0.a.feat.std'
-pf2  = 'rmsf_plot/rmsf_3.0.b.feat.avg'
-psf2 = 'rmsf_plot/rmsf_3.0.b.feat.std'
-pf3  = 'rmsd_plot/all_rmsd_3.0.avg.trans'
-psf3 = 'rmsd_plot/all_rmsd_3.0.std.trans'
-pf4  = 'gyration_plot/all_gyrate_3.0.avg.trans'
-psf4 = 'gyration_plot/all_gyrate_3.0.std.trans'
+# Data set 1
+pf1  = 'rmsf_plot/rmsf_3.0.a.feat.avg' # 8 cols x 5 rows
+psf1 = 'rmsf_plot/rmsf_3.0.a.feat.std' # 8x5
+pf2  = 'rmsf_plot/rmsf_3.0.b.feat.avg' # 8x5
+psf2 = 'rmsf_plot/rmsf_3.0.b.feat.std' # 8x5
+pf3  = 'rmsd_plot/all_rmsd_3.0.avg.trans' # 2x8
+psf3 = 'rmsd_plot/all_rmsd_3.0.std.trans' # 2x8
+pf4  = 'gyration_plot/all_gyrate_3.0.avg.trans' # 2x8
+psf4 = 'gyration_plot/all_gyrate_3.0.std.trans' # 2x8
 
-# 7.4 data
-pf5  = 'rmsf_plot/rmsf_7.4.a.feat.avg'
-psf5 = 'rmsf_plot/rmsf_7.4.a.feat.std'
-pf6  = 'rmsf_plot/rmsf_7.4.b.feat.avg'
-psf6 = 'rmsf_plot/rmsf_7.4.b.feat.std'
-pf7  = 'rmsd_plot/all_rmsd_7.4.avg.trans'
-psf7 = 'rmsd_plot/all_rmsd_7.4.std.trans'
-pf8  = 'gyration_plot/all_gyrate_7.4.avg.trans'
-psf8 = 'gyration_plot/all_gyrate_7.4.std.trans'
+# Data set 2
+pf5  = 'rmsf_plot/rmsf_7.4.a.feat.avg' # 8x5
+psf5 = 'rmsf_plot/rmsf_7.4.a.feat.std' # 8x5
+pf6  = 'rmsf_plot/rmsf_7.4.b.feat.avg' # 8x5
+psf6 = 'rmsf_plot/rmsf_7.4.b.feat.std' # 8x5
+pf7  = 'rmsd_plot/all_rmsd_7.4.avg.trans' # 2x8
+psf7 = 'rmsd_plot/all_rmsd_7.4.std.trans' # 2x8
+pf8  = 'gyration_plot/all_gyrate_7.4.avg.trans' # 2x8
+psf8 = 'gyration_plot/all_gyrate_7.4.std.trans' # 2x8
 
-# reading in data for both pH
+# Reading in both data
 a1,   b1,  c1,  d1,  e1,  f1,  g1,  h1 = np.genfromtxt(pf1,  unpack=True)
 sa1, sb1, sc1, sd1, se1, sf1, sg1, sh1 = np.genfromtxt(psf1, unpack=True)
 a2,   b2,  c2,  d2,  f2,  e2,  g2,  h2 = np.genfromtxt(pf2,  unpack=True)
@@ -43,7 +43,8 @@ sa7, sb7 = np.genfromtxt(psf7, unpack=True)
 a8,   b8 = np.genfromtxt(pf8,  unpack=True)
 sa8, sb8 = np.genfromtxt(psf8, unpack=True)
 
-# color maps for RMSD, Rg
+# Color maps for RMSD, Rg
+# Manual separation of first 16 colors of tab20
 colors_1=(
         (0.1215686275, 0.4666666667, 0.7058823529, 1.0),
         (1.0000000000, 0.4980392157, 0.0549019608, 1.0),
@@ -64,6 +65,7 @@ colors_2=(
         (0.9686274509803922, 0.7137254901960784, 0.82352941176470580, 1.0),
         (0.7803921568627451, 0.7803921568627451, 0.78039215686274510, 1.0))
 
+# Make the figure
 fig, ax = plt.subplots(nrows=4, ncols=2, figsize=(12,12))
 plt.subplots_adjust(wspace=0.0, hspace=0.0, left=0.17, right=0.99, top=0.96, bottom=0.05)
 
@@ -89,9 +91,13 @@ bw1_2      = bw_2*1
 
 # RMSF, 3.0, MA
 ax1 = plt.subplot(421)
-box1 = ax1.get_position()
-ax1.set_position([0.17, 0.76, 0.40, 0.20])
-bar_a1 = plt.bar(index_1,       a1, bw, yerr=sa1, error_kw=dict(lw=1), ecolor='k')
+box1 = ax1.get_position() # Probably superflous
+ax1.set_position([0.17, 0.76, 0.40, 0.20]) # Manually set plot position
+# Plot each set of bars offset a bit so they aren't overlapping
+# Set error bar line width, and color
+# This should make a plot with no caps on the error bars if called as
+# python2.7 plot.py
+bar_a1 = plt.bar(index_1,       a1, bw, yerr=sa1, error_kw=dict(lw=1), ecolor='k') 
 bar_b1 = plt.bar(index_1 + bw1, b1, bw, yerr=sb1, error_kw=dict(lw=1), ecolor='k')
 bar_c1 = plt.bar(index_1 + bw2, c1, bw, yerr=sc1, error_kw=dict(lw=1), ecolor='k')
 bar_d1 = plt.bar(index_1 + bw3, d1, bw, yerr=sd1, error_kw=dict(lw=1), ecolor='k')
@@ -99,6 +105,8 @@ bar_e1 = plt.bar(index_1 + bw4, e1, bw, yerr=se1, error_kw=dict(lw=1), ecolor='k
 bar_f1 = plt.bar(index_1 + bw5, f1, bw, yerr=sf1, error_kw=dict(lw=1), ecolor='k')
 bar_g1 = plt.bar(index_1 + bw6, g1, bw, yerr=sg1, error_kw=dict(lw=1), ecolor='k')
 bar_h1 = plt.bar(index_1 + bw7, h1, bw, yerr=sh1, error_kw=dict(lw=1), ecolor='k')
+# Set axis limits
+# Format the axes as needed
 plt.ylim(0, 15)
 plt.yticks(np.arange(0, 15, step=4), fontsize=13, fontweight='demibold')
 plt.xlim(-0.3,5)
@@ -221,6 +229,7 @@ fig.patches.extend([plt.Rectangle((0.075, 0.67), 0.000, 0.065,
 fig.patches.extend([plt.Rectangle((0.075, 0.775), 0.000, 0.065,
                                   fill='none', color='k', linestyle='-',
                                   transform=fig.transFigure, figure=fig)])
+# Format spines
 for axis in ['top','right']:
     ax1.spines[axis].set_visible(False)
     ax2.spines[axis].set_visible(False)
@@ -261,7 +270,7 @@ plt.text(0.6575, 0.085, legend_label5, transform=fig.transFigure, fontweight='de
 plt.text(0.7225, 0.085, legend_label6, transform=fig.transFigure, fontweight='demibold', fontsize=15, va='center', ha='center')
 plt.text(0.7875, 0.085, legend_label7, transform=fig.transFigure, fontweight='demibold', fontsize=15, va='center', ha='center')
 plt.text(0.8525, 0.085, legend_label8, transform=fig.transFigure, fontweight='demibold', fontsize=15, va='center', ha='center')
-
+# More legend "labels"
 plt.text(0.17, 0.1375, 'Backbone (no loop)', transform=fig.transFigure, fontweight='demibold', fontsize=15, va='center', ha='left')
 plt.text(0.17, 0.1125, 'Backbone (whole)'  , transform=fig.transFigure, fontweight='demibold', fontsize=15, va='center', ha='left')
 
